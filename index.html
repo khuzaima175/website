@@ -1,35 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Legend</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Valentine's Day Surprise</title>
+  <style>
+    body {
+      background: url('https://source.unsplash.com/1600x900/?flowers') no-repeat center center fixed;
+      background-size: cover;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      margin-top: 20px;
+      color: black; /* Changed from white to black */
+      text-shadow: 1px 1px 3px #000;
+    }
+    .envelope-container {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .envelope {
+      width: 200px;
+      height: 150px;
+      background: red;
+      position: relative;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .flap {
+      width: 0;
+      height: 0;
+      border-left: 100px solid transparent;
+      border-right: 100px solid transparent;
+      border-bottom: 75px solid red;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: transform 0.5s;
+    }
+    .rose {
+      font-size: 40px;
+      position: absolute;
+      top: 40px;
+      color: white;
+    }
+    .card {
+      width: 300px;
+      background-color: white;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      display: none;
+    }
+    .message {
+      display: none;
+      font-size: 22px;
+      color: red;
+    }
+    .buttons {
+      margin-top: 20px;
+    }
+    .btn {
+      padding: 10px 20px;
+      font-size: 18px;
+      border: none;
+      cursor: pointer;
+      margin: 5px;
+      border-radius: 5px;
+    }
+    .yes {
+      background-color: red;
+      color: white;
+      transition: transform 0.3s;
+      transform-origin: top center;
+    }
+    .no {
+      background-color: gray;
+      color: white;
+      position: absolute;
+      transition: all 0.3s ease;
+    }
+    .floating-heart {
+      position: absolute;
+      font-size: 24px;
+      color: red;
+      animation: float 3s linear infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-100px); opacity: 0; }
+    }
+  </style>
 </head>
 <body>
-    <img src="arthur.png" alt="Arthur Morgan ">
-    <h1>The Old Legend <u><a href="https://reddead.fandom.com/wiki/Arthur_Morgan">Arthur Morgan</a></u> </h1>
-    <p><em>The Best <strong>Gunslinger</strong> ever lived</em></p>
-    <p>Arthur Morgan who was known as the best gunslinger in the world. The best game character ever.</p>
-    <hr>
-
-    <h2> The Friends</h2>
-    <ul>
-        <li> <a href="https://reddead.fandom.com/wiki/Dutch_van_der_Linde">Dutch van dar linde</a></li>
-        <li> <a href="https://reddead.fandom.com/wiki/John_Marston">John Marston</a></li>
-        <li> <a href="https://reddead.fandom.com/wiki/Charles_Smith">Charles Smith</a></li>
-        <li> <a href="https://reddead.fandom.com/wiki/Hosea_Matthews">Hosea Matthews</a></li>
-    </ul>
-    <hr>
-
-    <h2> The Enemies </h2>
-    <ol>
-        <li> Mich Bell </li>
-        <li> Agent Milton </li>
-        <li> Colm O'Driscoll </li>
-    </ol>
-
-    <a href="details.html">Contact Me</a>
+  <h1>Tap the envelope to open!</h1>
+  <!-- Envelope -->
+  <div class="envelope-container">
+    <div class="envelope" onclick="openEnvelope()">
+      <div class="flap"></div>
+      <div class="rose">🌹</div>
+    </div>
+  </div>
+  <!-- Hidden Card -->
+  <div class="card">
+    <h2 id="question">Will you be my Valentine? 💖</h2>
+    <p class="message">I love you! ❤️</p>
+    <div class="buttons">
+      <button class="btn yes" onclick="sayYes()">Yes</button>
+      <button class="btn no" onclick="moveNo()">No</button>
+    </div>
+  </div>
+  <script>
+    let noMessages = [
+      "Are you really sure? 😢",
+      "Please don’t do this! 💔",
+      "Think again! 🥺",
+      "You might regret this... 😞",
+      "I’m getting sad... 😭",
+      "Give it one more thought! 💕"
+    ];
+    let messageIndex = 0;
+    let yesSize = 1;
+    function openEnvelope() {
+      document.querySelector('.flap').style.transform = 'rotateX(180deg)';
+      setTimeout(() => {
+        document.querySelector('.envelope-container').style.display = 'none';
+        document.querySelector('.card').style.display = 'block';
+      }, 500);
+    }
+    function sayYes() {
+      document.querySelector('.message').style.display = 'block';
+      document.querySelector('.buttons').style.display = 'none';
+      createHearts();
+    }
+    function moveNo() {
+      let noBtn = document.querySelector('.no');
+      let yesBtn = document.querySelector('.yes');
+      // Move "No" button to a random position
+      let newX = Math.random() * (window.innerWidth - 100);
+      let newY = Math.random() * (window.innerHeight - 200);
+      noBtn.style.left = `${newX}px`;
+      noBtn.style.top = `${newY}px`;
+      // Change the question text
+      document.getElementById("question").innerText = noMessages[messageIndex];
+      messageIndex = (messageIndex + 1) % noMessages.length;
+      // Increase size of Yes button
+      yesSize += 0.2;
+      yesBtn.style.transform = `scale(${yesSize})`;
+    }
+    function createHearts() {
+      for (let i = 0; i < 10; i++) {
+        let heart = document.createElement('div');
+        heart.classList.add('floating-heart');
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = Math.random() * 2 + 2 + 's';
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 3000);
+      }
+    }
+  </script>
 </body>
-
 </html>
